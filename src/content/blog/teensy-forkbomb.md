@@ -24,13 +24,12 @@ BITS 64
 ehdr:                 ; Elf64_Ehdr
   db      0x7f, "ELF" ; e_ident magic bytes
   db      2,1,1,0     ; e_ident size/endianness
-  db      0           ; 8 bytes of padding...
-                      ; convenient!
+  db      0           ; 8 bytes of padding... convenient!
 
 code:                 ; let's hide the code in it
-  mov     al, $39
-  syscall
-  jmp     code        ; this code is 6 bytes total
+  mov     al, $39     ; 2 bytes and
+  syscall             ; 2 bytes and
+  jmp     code        ; 2 bytes makes 6 bytes all up!
 
   db      0           ; split up the 0's for readelf
 
