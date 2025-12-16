@@ -18,7 +18,7 @@ const imageUrl = ogImage ? Astro.url.origin + ogImage : Astro.url.origin + "/cov
   <meta property="og:description" content={description} />
   <meta property="og:image" content={imageUrl} />
   <script is:inline>
-    const storedTheme = localStorage.getItem("theme");
+    const storedTheme = localStorage.getItem("theme") || "na";
     document.documentElement.className = storedTheme;
   </script>
 </head>
