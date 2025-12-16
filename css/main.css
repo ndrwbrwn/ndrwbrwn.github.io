@@ -1,0 +1,12 @@
+@font-face {
+ font-family:"CMU Serif";
+ font-style:normal;
+ font-weight:400;
+ src:url(/fonts/cm.eot) format("embedded-opentype"),
+ url(/fonts/cm.woff) format("woff"),
+ url(/fonts/cm.ttf) format("truetype")
+}
+
+body {
+	font-family:"CMU Serif",Times New Roman,Times,serif;
+}
