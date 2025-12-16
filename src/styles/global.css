@@ -8,22 +8,9 @@
   --secondary-background-color: #000000;
   --tertiary-background-color: #000000;
   --text-color: #ffffff;
-  --accent-color: #fe3320;
+  --accent-color: #ff0000;
   --radio-border-color: #b2b2b2;
-  --link-color: #00b3b1;
-
-  color-scheme: dark;
-}
-
-.light {
-  --background-color: #ffffff;
-  --secondary-background-color: #d3d3d3;
-  --tertiary-background-color: #000000;
-  --text-color: #0e071d;
-  --accent-color: #fe3320;
-  --radio-border-color: #b2b2b2;
-
-  color-scheme: light;
+  --link-color: #43c4eB;
 }
 
 html {

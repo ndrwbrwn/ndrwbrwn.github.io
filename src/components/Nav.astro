@@ -2,48 +2,12 @@
 import { Image } from "astro:assets";
 
 import Icon from "../../public/favicon.svg";
-
-import Dropdown from "./Dropdown.astro"
 ---
-<script is:inline>
-  let themeOptions = ["light", "dark"];
-
-  let theme = "dark";
-
-  function loadTheme() {
-    theme = localStorage.getItem("theme") || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-	document.documentElement.className = theme;
-  }
-
-  function saveTheme() {
-    document.documentElement.className = theme;
-    localStorage.setItem("theme", theme);
-  }
-
-  function switchTheme() {
-    let cur = localStorage.getItem("theme");
-    theme = themeOptions.find((e) => e !== cur) || "dark";
-    saveTheme();
-  }
-
-  loadTheme();
-</script>
-
 <nav>
   <div class="container">
     <a href="/">
       <Image src={ Icon } width="32" height="32" alt="This website's logo" />
     </a>
-
-    <code class="right">
-        <Dropdown>
-          <p slot="icon"> ls </p>
-          <a href="../" class="folder"> .. </a>
-          <a href="./" class="folder"> . </a>
-          <a href="/playlist" class="file"> playlist </a>
-          <a onclick="switchTheme()" class="executable"> switch_theme.sh </a>
-        </Dropdown>
-    </code>
   </div>
 </nav>
 

@@ -4,7 +4,7 @@ publicationDate: 2024-01-25
 description: "Making a teeny tiny forkbomb for x86_64 Linux."
 ---
 
-First post? Wow. Anyway, I wanted to know what happens when you set off a really really small forkbomb. So I made one. Credit to [this excellent tutorial](https://www.muppetlabs.com/~breadbox/software/tiny/teensy.html), which pointed me in every direction I wanted to go.
+First (real) post? Wow. Anyway, I wanted to know what happens when you set off a really really small forkbomb. So I made one. Credit to [this excellent tutorial](https://www.muppetlabs.com/~breadbox/software/tiny/teensy.html), which pointed me in every direction I wanted to go.
 
 # Huh?
 I was bored. I'd just finished studying my uni's introductory Systems Programming course\*, which is infamous for resulting in accidental forkbombs. If a program was so small that it didn't really have anything to copy or anything to setup, would it even have much of an effect as a forkbomb?
@@ -59,7 +59,7 @@ phdr:                 ; Elf64_Phdr
 end:
 ```
 
-The biggest change is just that I'm dealing with 64-bit systems, which means I had to re-read `elf.h` for my system and work out the new sizes of things. That's not too hard. 
+The biggest change is just that I'm dealing with 64-bit systems, which means I had to re-read `elf.h` for my system and work out the new sizes of things. That's not too hard.
 
 I do have one interesting novelty, though: you can apparently trick `readelf` into thinking your executable is totally legit by making sure the 1st and 8th bytes in the `e_ident` padding array are both zero. Apparently, it checks the first 8 magic bytes, which have real values, then checks the first and last bytes of the 0-padded section. So even though this is horrifically off-spec, even `readelf` thinks it's totally legit.
 
@@ -67,7 +67,7 @@ This assembles down to 120 bytes flat. (That's 960 bits. *Under 1000 bits.* That
 
 The last thing is that you might notice I've randomly set `e_shnum` to 5, even though we don't have 5 section headers. This *almost* lines up with the start of the program header struct (which is also 1 and 5, but larger-size integers), but I couldn't quite get it to work. I'll come back for those last 8 bytes... one day.
 
-## But what it do?
+## But what does it do?
 As it turns out, if you compile and run this: not much. It's so tiny that it has a negligible effect on memory, even before you factor in that `fork(2)` copies-on-write. It's so insanely CPU-bound that you end up finding yourself staring at a list of 1000 forkbomb processes where only $num_cores_in_your_pc can actually be forking at a time.
 
 I ran it for like, 10 minutes on a laptop with an i7-8550U and 16gb ram, and it just sorta... sat there. I could switch tabs out of my terminal and browse the web just fine. Wild.

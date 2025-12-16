@@ -14,8 +14,8 @@ const articles = (await getCollection("blog")).sort(
 
 <PageLayout title="Andrew Brown" description="A website for my (mis)adventures.">
   <Content />
-  <h2 id="thoughts">
-    <a class="heading-linker" href="#thoughts">Thoughts</a>  
+  <h2 id="content">
+    <a class="heading-linker" href="#content">Content</a>  
   </h2>
   <div class="article-grid">
     {
@@ -44,12 +44,8 @@ const articles = (await getCollection("blog")).sort(
   }
 
   article {
+    background-color: var(--secondary-background-color);
     border: var(--standard-border);
-  }
-
-  article > header {
-    padding: 0;
-    border-block-end: var(--standard-border);
   }
 
   .article-content {
