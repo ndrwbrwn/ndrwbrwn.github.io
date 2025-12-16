@@ -1,0 +1,58 @@
+---
+import { getEntryBySlug, getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import PageLayout from "../layouts/PageLayout.astro";
+import PublicationDate from "../components/PublicationDate.astro";
+
+const about = await getEntryBySlug("about", "about");
+const { Content } = await about.render();
+
+const articles = (await getCollection("blog")).sort(
+  (a, b) => b.data.publicationDate.valueOf() - a.data.publicationDate.valueOf()
+);
+---
+
+<PageLayout title="Andrew Brown" description="A personal website describing the exploits of one Andrew Brown.">
+  <Content />
+  <h2 id="blog">
+    <a class="heading-linker" href="#blog">Blog</a>  
+  </h2>
+  <div class="article-grid">
+    {
+      articles.map((article) => (
+        <article>
+          <header>
+            <Image src={article.data.cover} alt={article.data.coverAlt} /> 
+          </header>
+          <div class="article-content">
+            <PublicationDate publicationDate={article.data.publicationDate} />
+            <h3>
+              <a href={article.slug}>{article.data.title}</a>
+            </h3>
+            <p>{article.data.description}</p>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</PageLayout>
+
+<style>
+  .article-grid {
+    display: grid;
+    gap: var(--size-7);
+  }
+
+  article {
+    border: var(--standard-border);
+  }
+
+  article > header {
+    padding: 0;
+    border-block-end: var(--standard-border);
+  }
+
+  .article-content {
+    padding: var(--size-3);
+  }
+</style>
