@@ -12,7 +12,7 @@ const articles = (await getCollection("blog")).sort(
 );
 ---
 
-<PageLayout title="Andrew Brown" description="A personal website describing the exploits of one Andrew Brown.">
+<PageLayout title="Andrew Brown" description="A website for my (mis)adventures.">
   <Content />
   <h2 id="thoughts">
     <a class="heading-linker" href="#thoughts">Thoughts</a>  
@@ -22,7 +22,7 @@ const articles = (await getCollection("blog")).sort(
       articles.map((article) => (
         <article>
           <header>
-            <Image src={article.data.cover} alt={article.data.coverAlt} /> 
+          { article.data.cover && <Image src={article.data.cover} alt={article.data.coverAlt} /> }
           </header>
           <div class="article-content">
             <PublicationDate publicationDate={article.data.publicationDate} />
@@ -40,7 +40,7 @@ const articles = (await getCollection("blog")).sort(
 <style>
   .article-grid {
     display: grid;
-    gap: var(--size-7);
+    gap: 2rem;
   }
 
   article {
@@ -53,6 +53,6 @@ const articles = (await getCollection("blog")).sort(
   }
 
   .article-content {
-    padding: var(--size-3);
+    padding: 1rem;
   }
 </style>

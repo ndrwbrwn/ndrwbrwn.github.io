@@ -1,6 +1,4 @@
 ---
-cover: "../../assets/blog/build-a-good-website/cover.jpg"
-coverAlt: "Default cover image."
 title: "The world's smallest forkbomb"
 publicationDate: 2024-01-25
 description: "Making a teeny tiny forkbomb for x86_64 Linux."
@@ -9,9 +7,11 @@ description: "Making a teeny tiny forkbomb for x86_64 Linux."
 First post? Wow. Anyway, I wanted to know what happens when you set off a really really small forkbomb. So I made one. Credit to [this excellent tutorial](https://www.muppetlabs.com/~breadbox/software/tiny/teensy.html), which pointed me in every direction I wanted to go.
 
 # Huh?
-I was bored. I'd just finished studying CSSE2310, which is infamous for resulting in accidental forkbombs. If a program was so small that it didn't really have anything to copy or anything to setup, would it even have much of an effect as a forkbomb?
+I was bored. I'd just finished studying my uni's introductory Systems Programming course\*, which is infamous for resulting in accidental forkbombs. If a program was so small that it didn't really have anything to copy or anything to setup, would it even have much of an effect as a forkbomb?
 
 As it turns out, it kinda doesn't.
+
+\*Astute readers may notice that this means I took 2 years to write this blog post, to which I say... uhhh... no comment.
 
 ## The actual code
 There's a mild story here about how I traipsed around the `elf.h` include file reading about how 64-bit executables work, but honestly, it's nothing that breadbox's tutorial (linked above) doesn't already cover. Go check that out if you're curious about how this stuff works, it's really good!
@@ -24,12 +24,14 @@ BITS 64
 ehdr:                 ; Elf64_Ehdr
   db      0x7f, "ELF" ; e_ident magic bytes
   db      2,1,1,0     ; e_ident size/endianness
-  db      0           ; convenient 8-byte section of padding
+  db      0           ; 8 bytes of padding...
+                      ; convenient!
 
-code:                 ; hide the code in it
+code:                 ; let's hide the code in it
   mov     al, $39
   syscall
-  jmp     code        ; 6 bytes of code
+  jmp     code        ; this code is 6 bytes total
+
   db      0           ; split up the 0's for readelf
 
   dw      2           ; e_type
@@ -83,4 +85,4 @@ AAAAAAAAEEAAAAAAAAAQQAAAAAAAeAAAAAAAAAB4AAAAAAAAAA
 EAAAAAAAAA
 ```
 
-\*Please don't. You've got no idea what's in there. I just wanted to point out how neat it is that this forkbomb is small enough, even encoded, that it could theoretically be... idk, my facebook status or something. 
+\*Please don't. You've got no idea what's in there. I just wanted to point out how neat it is that this forkbomb is small enough, even encoded, that it could theoretically be... idk, my facebook status or something.

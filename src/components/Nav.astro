@@ -3,19 +3,49 @@ import { Image } from "astro:assets";
 
 import Icon from "../../public/favicon.svg";
 
-import ArticleSearchWrapper from "../components/ArticleSearchWrapper.astro";
-import ThemeToggle from "../components/ThemeToggle.svelte";
+import Dropdown from "./Dropdown.astro"
 ---
+<script lang="ts">
+  let themeOptions = ["light", "dark"];
+
+  let theme = "na";
+
+  function loadTheme() {
+    theme = localStorage.getItem("theme") || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+	document.documentElement.className = theme;
+  }
+
+  function saveTheme() {
+    document.documentElement.className = theme;
+    localStorage.setItem("theme", theme);
+  }
+
+  function switchTheme() {
+    let cur = localStorage.getItem("theme");
+    theme = themeOptions.find((e) => e !== cur);
+    saveTheme();
+  }
+
+  loadTheme();
+</script>
 
 <nav>
   <div class="container">
     <a href="/">
-      <Image src={Icon} width="32" height="32" alt="This website's logo" />
+      <Image src={ Icon } width="32" height="32" alt="This website's logo" />
     </a>
-    <a href="/playlist"> ./playlist </a>
-    <slot />
-    <ArticleSearchWrapper />
-    <ThemeToggle client:only="svelte" />
+
+    <div align="right">
+      <code>
+        <Dropdown>
+          <p slot="icon"> ls </p>
+          <a href="../" class="folder"> .. </a>
+          <a href="./" class="folder"> . </a>
+          <a href="/playlist" class="file"> playlist </a>
+          <a onclick="switchTheme()" class="executable"> switch_theme.sh </a>
+        </Dropdown>
+      </code>
+    </div>
   </div>
 </nav>
 
@@ -36,5 +66,20 @@ import ThemeToggle from "../components/ThemeToggle.svelte";
 
   .container > *:first-child {
     margin-inline-end: auto;
+  }
+
+  a {
+    padding: 10px;
+    text-decoration: none;
+  }
+
+  .file {
+    color: var(--text-color);
+  }
+  .folder {
+    color: #33f;
+  }
+  .executable {
+    color: #0d0;
   }
 </style>
