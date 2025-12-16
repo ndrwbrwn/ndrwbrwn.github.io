@@ -22,7 +22,7 @@ const articles = (await getCollection("blog")).sort(
       articles.map((article) => (
         <article>
           <header>
-          { article.data.cover && <Image src={article.data.cover} alt={article.data.coverAlt} /> }
+          <!-- { article.data.cover && article.data.coverAlt && <Image src={article.data.cover} alt={article.data.coverAlt} /> } -->
           </header>
           <div class="article-content">
             <PublicationDate publicationDate={article.data.publicationDate} />

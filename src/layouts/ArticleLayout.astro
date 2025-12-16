@@ -1,16 +1,4 @@
 ---
-interface Props {
-  id: string;
-
-  cover?: string;
-  coverAlt?: string;
-
-  title: string;
-  description: string;
-  publicationDate: string;
-  description: string;
-}
-
 const { id, cover = "", coverAlt = "", title, description, publicationDate, headings } = Astro.props;
 
 import { Image } from "astro:assets";
