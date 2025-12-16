@@ -1,6 +1,6 @@
 :root, .light {
   --nav-height: var(--size-8);
-  --standard-border: var(--border-size-0);
+  --standard-border: var(--border-size-1) solid;
   --font-sans: "Roboto", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 
@@ -10,6 +10,7 @@
   --text-color: var(--gray-12);
   --accent-color: var(--blue-11);
   --radio-border-color: var(--gray-4);
+
   color-scheme: light;
 }
 
@@ -21,6 +22,7 @@
     --text-color: var(--gray-0);
     --accent-color: var(--blue-2);
     --radio-border-color: var(--gray-8);
+
     color-scheme: dark;
   }
 }
@@ -32,6 +34,7 @@
   --text-color: var(--gray-0);
   --accent-color: var(--blue-2);
   --radio-border-color: var(--gray-8);
+
   color-scheme: dark;
 }
 

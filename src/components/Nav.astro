@@ -1,4 +1,8 @@
 ---
+import { Image } from "astro:assets";
+
+import Icon from "../../public/favicon.svg";
+
 import ArticleSearchWrapper from "../components/ArticleSearchWrapper.astro";
 import ThemeToggle from "../components/ThemeToggle.svelte";
 ---
@@ -6,12 +10,10 @@ import ThemeToggle from "../components/ThemeToggle.svelte";
 <nav>
   <div class="container">
     <a href="/">
-      <img src="/favicon.svg" width="32" height="32" alt="This website's logo" />
+      <Image src={Icon} width="32" height="32" alt="This website's logo" />
     </a>
+    <a href="/playlist"> ./playlist </a>
     <slot />
-    <a href="/playlist">
-      <img src="../src/assets/icons/Spotify_Icon_RGB_White.png" width="32" height="32" alt="Spotify's logo" />
-    </a>
     <ArticleSearchWrapper />
     <ThemeToggle client:only="svelte" />
   </div>
