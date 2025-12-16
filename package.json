@@ -10,12 +10,15 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/check": "^0.8.1",
     "@astrojs/markdown-remark": "^3.0.0",
+    "@astrojs/rss": "^4.0.7",
     "@fontsource/jetbrains-mono": "^4.5.12",
     "@fontsource/roboto": "^4.5.8",
     "astro": "^3.0.7",
+    "markdown-it": "^14.1.0",
     "rehype-autolink-headings": "^6.1.1",
-    "@astrojs/check": "^0.8.1",
+    "sanitize-html": "^2.13.0",
     "typescript": "^5.5.3"
   }
 }

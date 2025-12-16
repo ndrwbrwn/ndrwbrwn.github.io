@@ -79,10 +79,8 @@ If you really want to try it yourself, you can copy the code above. On my machin
 Alternatively, you can copy this base64 string, decode it, `chmod +x` the resulting file, and try running that*:
 
 ```
-f0VMRgIBAQAAsDkPBev6AAIAPgABAAAACRBAAAAAAABAAAAAAA
-AAAAAAAAAAAAAAAAAAAEAAOAABAAAABQAAAAEAAAAFAAAAAAAA
-AAAAAAAAEEAAAAAAAAAQQAAAAAAAeAAAAAAAAAB4AAAAAAAAAA
-EAAAAAAAAA
+f0VMRgIBAQAAsDkPBev6AAIAPgABAAAACRBAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAEAAOAABAAAA
+BQAAAAEAAAAFAAAAAAAAAAAAAAAAEEAAAAAAAAAQQAAAAAAAeAAAAAAAAAB4AAAAAAAAAAEAAAAAAAAA
 ```
 
 \*Please don't. You've got no idea what's in there. I just wanted to point out how neat it is that this forkbomb is small enough, even encoded, that it could theoretically be... idk, my facebook status or something.

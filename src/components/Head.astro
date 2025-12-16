@@ -7,6 +7,7 @@ const imageUrl = ogImage ? Astro.url.origin + ogImage : Astro.url.origin + "/cov
 <head>
   <meta charset="utf-8" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="alternate" type="application/rss+xml" title="Andrew Brown" href="/rss.xml" />
   <meta name="viewport" content="width=device-width" />
   <meta name="generator" content={Astro.generator} />
   <title>{title}</title>
@@ -18,7 +19,6 @@ const imageUrl = ogImage ? Astro.url.origin + ogImage : Astro.url.origin + "/cov
   <meta property="og:description" content={description} />
   <meta property="og:image" content={imageUrl} />
   <script is:inline>
-    const storedTheme = localStorage.getItem("theme") || "na";
-    document.documentElement.className = storedTheme;
+    document.documentElement.className = localStorage.getItem("theme") || "dark";
   </script>
 </head>

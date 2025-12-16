@@ -1,4 +1,4 @@
-Hi there! Welcome to… whatever this is.
+Hi there! Welcome to… whatever this is. Now with [RSS](/rss.xml)!
 
 ### About Me
 
