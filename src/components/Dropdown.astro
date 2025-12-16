@@ -5,10 +5,21 @@
   <summary>
     <slot name="icon" />
   </summary>
-  <slot />
+  <div class="drop">
+    <slot />
+  </div>
 </details>
 
 <style>
+  .drop {
+    position: absolute;
+    right: 0px;
+    top: 100%;
+    display: grid;
+    background-color: var(--secondary-background-color);
+    border-block: var(--standard-border);
+  }
+
   summary {
     display: grid;
     padding: .5rem;
