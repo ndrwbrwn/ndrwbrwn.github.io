@@ -2,7 +2,7 @@ import { z, defineCollection } from "astro:content";
 
 export const collections = {
   blog: defineCollection({
-    schema: ({ image }) => z.object({
+    schema: () => z.object({
       cover: z.string().optional(),
       coverAlt: z.string().optional(),
       title: z.string(),
@@ -10,4 +10,5 @@ export const collections = {
       description: z.string(),
     }),
   }),
+  about: defineCollection({})
 };
