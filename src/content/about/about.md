@@ -6,7 +6,7 @@ models<sup>[[1](https://en.wikipedia.org/wiki/Consistency_model#Weak_memory_cons
 could break proofs (specifically
 Rely/Guarantee<sup>[[2](http://homepages.cs.ncl.ac.uk/cliff.jones/publications/SETSS-17.pdf)]</sup>
 proofs) about the concurrent behaviour of a computer program, for which I received
-a High Distinction (7).
+a High Distinction.
 
 I studied Computer Science and Cyber Security at the University of Queensland.
 I graduated at the end of 2025 with a "vertical dual degree": a Bachelor of Computer Science (Cyber Security) and

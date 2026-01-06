@@ -9,9 +9,7 @@ import PublicationDate from "../components/PublicationDate.astro";
 <PageLayout {title} {description} ogImage={cover !== "" ? cover.src : ""} >
   { cover !== "" && <Image src={cover} alt={coverAlt} slot="header-before" /> }
   <Fragment slot="header">
-    <p>
-      Published on <PublicationDate {publicationDate} /> | <a href="/">Back to home</a>
-    </p>
+    <p>Published on <PublicationDate {publicationDate} /> | <a href="/">Back to home</a></p>
   </Fragment>
   <slot />
 </PageLayout>

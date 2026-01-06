@@ -21,7 +21,7 @@ const articles = (await getCollection("blog")).sort(
   <h2 id="about"><a class="heading-linker" href="#about">About Me</a></h2>
   { console.log(JSON.stringify(({ Content } = await getRenderedEntry("about")))) }
   <Content />
-  <h3 id="about"><a class="heading-linker" href="#this">About This</a></h2>
+  <h3 id="this"><a class="heading-linker" href="#this">About This</a></h2>
   { console.log(JSON.stringify(({ Content } = await getRenderedEntry("this")))) }
   <Content/>
   <h2 id="content"><a class="heading-linker" href="#content">Postings</a></h2>
