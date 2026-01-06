@@ -1,5 +1,5 @@
 I enjoy systems programming, formal methods, and cyber security. When you do
-all three at once, you get to say stuff like "I've proven this smartcard driver never
+all three at once, you get to say stuff like "I've proven this driver never
 leaks secret information," which is super neat. My Master's project was on
 creating a tool to automatically detect where weak memory
 models<sup>[[1](https://en.wikipedia.org/wiki/Consistency_model#Weak_memory_consistency_models)]</sup>
