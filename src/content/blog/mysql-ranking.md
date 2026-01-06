@@ -4,7 +4,7 @@ publicationDate: 2026-01-24
 description: "I really considered writing a rhyming title for this one."
 ---
 
-Engang for længe siden... I tried fairly hard to optimise an old, *highly* slow, database-based ranking system.
+<a title='Danish: "Once a long time ago..."'>Engang for længe siden...</a> I tried fairly hard to optimise an old, *highly* slow, database-based ranking system.
 Hopefully a little bit of this is interesting.
 
 ## What & why?
@@ -52,7 +52,7 @@ INSERT INTO ranks (`board`, `account`, `rank`, `date`) (
         SELECT `board`, `account`, @rank:=@rank+1 AS `rank`
         FROM `scores`, (SELECT @rank:=0) tmp
         WHERE board=? /* Query parameter: which board are we ranking? */
-        ORDER BY `raw_score` DESC,`acct_id` ASC
+        ORDER BY `value` DESC,`account` ASC
     ) tmp
     LEFT JOIN `ranks` ON (
         tmp.`account`=ranks.`account` AND tmp.`board`=ranks.`board`
@@ -109,9 +109,13 @@ This sped us up a lot. Like, a *lot*. The runtime of this query is ~12 minutes, 
 However, this is one stonkingly big query, which means we're still plagued by the locking issue: if we run this as-is, we've
 locked the `scores` table for 12 minutes, which actually makes our original 2m30s timeout problem *worse*.
 
-It turns out the big reason why this takes 12 mintues is that MySQL has an *undo log*, which is how it handles transation-level
-consistency. It keeps a record of all rows changed during a transaction so it can roll them all back if something fails. In
-doing this query, then, we've caused ~28.5 million entries to be written to the undo log, which is where most of the 12 minutes goes.
+Also the inner SELECT here only takes like, 2 minutes. Wild. But writing is always harder than reading so I guess that's kinda
+fair enough.
+
+However, it turns out that a big reason why this takes 12 mintues is that MySQL has an *undo log*, which is how it handles
+transaction-level consistency. It keeps a record of all rows changed during a transaction so it can roll them all back if
+something fails. In doing this query, then, we've caused ~28.5 million entries to be written to the undo log, which is where
+most of the 12 minutes goes.
 
 ## Ways Forward
 ### One
@@ -132,46 +136,48 @@ DROP TABLE ranks_old;
 
 Clean up cruft just-in-case, duplicate the `ranks` table, then *without* read-locking the `scores` table, dump data into the
 new table. So the only lock we have is the lock on the new table, which no-one else should be looking at.
-Then, perform what I'm referring to as "Indiana Jones'ing" the tables<sup>[[1](https://en.wikipedia.org/wiki/Golden_Idol)]</sup> by atomically renaming them. Then commit everything and get rid of the old stuff.
+Then, perform what I'm referring to as "Indiana Jones'ing" the tables<sup>[[1](https://www.youtube.com/watch?v=mC1ikwQ5Zgc)]</sup>
+by atomically renaming them. Then commit everything and get rid of the old stuff.
 
 So the ~12 minute big query runs in the background, reading-without-locking from `scores` and writing-with-locking into a new table
-that no-one cares about. If a table locks in a ~~forest~~ database, but no-one tries to use it, does it really lock?
+that no-one cares about. If a table locks in a ~~forest~~ database, but no-one tries to use it... does it really lock?
 
 ### Two
-Try dumping the new to file with `SELECT INTO outfile;` and then loading it with `LOAD DATA infile;`, instead of <a title="INSERT ... ON DUPLICATE KEY UPDATE">IODKU</a>.
-I saw some sources claiming this could be faster in some cases, it just requires managing a temporary file on your DB server somehow
-(which is not super fun).
+Try dumping the new to file with `SELECT INTO outfile;` and then loading it with `LOAD DATA infile;`, instead of
+<a title="INSERT ... ON DUPLICATE KEY UPDATE">IODKU</a>. I saw some sources claiming this could be faster in some cases, it
+just requires managing a temporary file on your DB server somehow (which is not super fun).
 
-Well, turns out this actually ends up taking *longer*: ~15 minutes, up from 12. So we canned this idea, because trying to manage remotely
+Well, turns out this actually ended up taking *longer*: ~15 minutes, up from 12. So we canned this idea, because trying to manage remotely
 creating and deleting some `outfile` on our DB server with only a MySQL interface sucks even it ran at the same speed.
 At a guess, the slowdown was probably because writing to file means the data is just going to disk and getting re-read, rather than
-remaining inside MySQL's memory.
+remaining inside MySQL's memory. Maybe it's better for truly huge tables that just never fit in memory to begin with?
 
 ### Three
-Try `CREATE TABLE SELECT`. This one I had high hopes for. Reason being, when we do IODKU, we already have a table, that MySQL doesn't
-know the contents of, so we have to create an undo log entry for every single row (to roll it back to "this row doesn't exist").
+Try `CREATE TABLE SELECT`. This one I had high hopes for. The reason being, when we do IODKU, we already have a table, but MySQL doesn't
+"know" the contents of at `INSERT`-time.
+This means it has to create an undo log entry for every single row (to roll it back to "this row doesn't exist").
 Now, of course, you and I who are writing this can tell that the table was empty to begin with, and so the undo log *really* only
-needs to say "this table was empty", but with IODKU, MySQL can't tell.
+needs to say "this table was empty", but with a separate `CREATE` and `INSERT`, MySQL doesn't know the difference.
 
 So in *theeeoooory*, `CREATE TABLE SELECT` should correctly indicate to MySQL that the table was empty to begin with, which avoids all
-of that undo-log-writing. In *practice*, however... you can't `CREATE TABLE ranks_new SELECT ... LIKE ranks`. So you will have to
-completely rebuild all of the indices after creating, instead of starting with them already in place.
-
-Also, `CREATE TABLE SELECT` requires more namespace-juggling, because you have to manually tell it what to call each column of the table,
-etc etc. (I guess technically this is another facet of the fact you can't use `LIKE`, but it's worth calling out separately.)
+of that undo-log-writing. In *practice*, however... you can't `CREATE TABLE ranks_new SELECT ... LIKE ranks`. So you have to
+completely blow out the complexity of your query by manually naming everything correctly, and even have to put in special care to make
+sure your indices get rebuilt in the same way once the table is created. So, because something something readable something something
+maintainable, this option isn't really suitable either.
 
 ### Four
-Mmmmm... split things back up again?
-So go back to 89 queries, but still use `RANK()` and `PARTITION BY g.group_id` to avoid all of the extra cruft.
+Mmmmm... maybe we could split things back up again?
+So go back to 89 queries, but still use `RANK()` and `PARTITION BY g.group_id` to avoid all of the extra cruft. (You'll have to take my
+word that there was a heap of it: the script that did all of this was over 400 lines of code! I cbf explaining all of that!)
 
-To be honest, I also don't know why this sucked, but it did. I wrote a stored procedure to do 89 per-leaderboard ranking runs, in a loop,
-then manually called it; it ran for 40 minutes, then I made the executive decision that it was at least as slow as the old way,
-so I killed it. Go figure.
+To be honest, I don't know why splitting things up again sucked, but it did. I wrote a stored procedure to do 89 per-leaderboard
+ranking runs, in a loop, then manually called it; it ran for 40 minutes, then I made the executive decision that it was at least
+as slow as the old way, so I killed it. Go figure. Maybe because it was pulling the entire table all 89 times to filter by `board`?
 
 ## Wrapping Up
-Well, if you can't tell by the level of detail I put into the four ways above, we ended up going with the first one.
+Well, if you can't tell by the level of detail I put into those four ways above, we ended up going with the first one.
 It's been live for approximately 12 months (since 18/01/2024) and we haven't seen any timeouts since. At one point I threatened to
 make it run more-often with the shorter runtime, because our ranks do get a bit out-of-date only recalculating every 2 hours, but
 that's a slope that only leads to "live rankings", which is a whole different beast I don't really want to bother with yet. Yet.
 
-Thus ends the story, og hvis de ikke er døde, lever de endnu.
+Thus ends the story. <a title='Danish: "And if they&#39;re not dead, they are still alive."'>Og hvis de ikke er døde, lever de endnu.</a>
