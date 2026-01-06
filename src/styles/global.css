@@ -1,15 +1,16 @@
-:root, .dark {
+:root {
   --nav-height: 3rem;
   --standard-border: 1px solid;
   --font-sans: "Roboto", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 
-  --background-color: #0e071d;
-  --secondary-background-color: #000000;
-  --tertiary-background-color: #000000;
-  --text-color: #ffffff;
-  --accent-color: #ff0000;
-  --radio-border-color: #b2b2b2;
+  --background-color: #ffffff;
+  --secondary-background-color: #0e071d;
+
+  --text-color: #0e071d;
+  --secondary-text-color: #ffffff;
+  --accent-color: #00b3b1;
+
   --link-color: #43c4eB;
 }
 
@@ -100,17 +101,7 @@ code {
   margin-inline-end: .25rem;
 }
 
-button, input {
-  font: inherit;
-  padding-inline: .5rem;
-  padding-block: .25rem;
-  background-color: var(--secondary-background-color);
-  border: var(--standard-border);
-  color: inherit;
-}
-
-summary,
-button {
+summary {
   cursor: pointer;
 }
 
@@ -128,10 +119,4 @@ blockquote {
   margin-inline-start: 0;
   padding-inline-start: 1rem;
   border-inline-start: var(--standard-border);
-}
-
-hr {
-  block-size: 2px;
-  background-color: var(--tertiary-background-color);
-  border: none;
 }

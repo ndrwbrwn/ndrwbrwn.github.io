@@ -10,8 +10,7 @@ import PublicationDate from "../components/PublicationDate.astro";
   { cover !== "" && <Image src={cover} alt={coverAlt} slot="header-before" /> }
   <Fragment slot="header">
     <p>
-      Published on
-      <PublicationDate {publicationDate} />
+      Published on <PublicationDate {publicationDate} /> | <a href="/">Back to home</a>
     </p>
   </Fragment>
   <slot />

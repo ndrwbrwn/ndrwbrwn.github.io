@@ -1,5 +1,12 @@
 # website
 
-Once upon a time, this was written with the aurora theme.
+I still want to write posts about:
 
-However, I've removed or rewritten every single thing they advertised in their readme, so it's not really aurora anymore, is it?
+- regular expressions       // take the good bits out of the UQCS talk
+- very fast max(x,0)        // still needs more effort to actually benchmark
+- SVG animation             // e.g. the rainbow logo?
+- chromium                  // wait until SOCBB contacts? reproduce their interview? idk
+- switching to graphene     // if/when this becomes relevant
+- SWM GM info               // because info like this is hard to find?
+- advent of code in perl?   // for fun
+- playlist 2.0              // use Spotify API at compile-time to pull the 10 most recent songs instead of embedding the 10 first?

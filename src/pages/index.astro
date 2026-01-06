@@ -3,11 +3,14 @@ import { getEntry, getCollection, render } from "astro:content";
 import PageLayout from "../layouts/PageLayout.astro";
 import PublicationDate from "../components/PublicationDate.astro";
 
-const about = await getEntry("about", "about");
-if (!about) {
-  return Astro.redirect('/404');
+async function getRenderedEntry(name) {
+  const entry = await getEntry("about", name);
+  if (!entry) {
+    return Astro.redirect('/404');
+  }
+  return await render(entry);
 }
-const { Content } = await render(about);
+var { Content } = {};
 
 const articles = (await getCollection("blog")).sort(
   (a, b) => b.data.publicationDate.valueOf() - a.data.publicationDate.valueOf()
@@ -15,10 +18,13 @@ const articles = (await getCollection("blog")).sort(
 ---
 
 <PageLayout title="Andrew Brown" description="A website for my (mis)adventures.">
+  <h2 id="about"><a class="heading-linker" href="#about">About Me</a></h2>
+  { console.log(JSON.stringify(({ Content } = await getRenderedEntry("about")))) }
   <Content />
-  <h2 id="content">
-    <a class="heading-linker" href="#content">Content</a>  
-  </h2>
+  <h3 id="about"><a class="heading-linker" href="#this">About This</a></h2>
+  { console.log(JSON.stringify(({ Content } = await getRenderedEntry("this")))) }
+  <Content/>
+  <h2 id="content"><a class="heading-linker" href="#content">Postings</a></h2>
   <div class="article-grid">
     {
       articles.map((article) => (
@@ -46,6 +52,7 @@ const articles = (await getCollection("blog")).sort(
   }
 
   article {
+    color: var(--secondary-text-color);
     background-color: var(--secondary-background-color);
     border: var(--standard-border);
   }
