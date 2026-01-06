@@ -4,7 +4,7 @@ publicationDate: 2024-01-25
 description: "Making a teeny tiny forkbomb for x86_64 Linux."
 ---
 
-First (real) post? Wow. Anyway, I wanted to know what happens when you set off a really really small forkbomb. So I made one. Credit to [this excellent tutorial](https://www.muppetlabs.com/~breadbox/software/tiny/teensy.html), which pointed me in every direction I wanted to go.
+Kān yā mā kān, fī qadīmi-z-zamān, wa-salifi-l-‘aṣri wa-l-’awān... I wanted to know what happens when you set off a really really small forkbomb. So I made one. Credit to [this excellent tutorial](https://www.muppetlabs.com/~breadbox/software/tiny/teensy.html), which pointed me in every direction I wanted to go.
 
 # Huh?
 I was bored. I'd just finished studying my uni's introductory Systems Programming course\*, which is infamous for resulting in accidental forkbombs. If a program was so small that it didn't really have anything to copy or anything to setup, would it even have much of an effect as a forkbomb?
@@ -75,7 +75,7 @@ I ran it for like, 10 minutes on a laptop with an i7-8550U and 16gb ram, and it 
 ### P.S.
 If you really want to try it yourself, you can copy the code above. On my machine, it assembles with `nasm -f bin forkbomb.asm -o forkbomb`, but several fields in the elf64 struct are machine-specific, so it may refuse to work.
 
-Alternatively, you can copy this base64 string, decode it, `chmod +x` the resulting file, and try running that*:
+Alternatively, you can copy this base64 string, decode it, `chmod +x` the resulting file, and try running that. (Please don't. You've got no idea what's in there. I just wanted to point out how neat it is that this forkbomb is small enough, even encoded, that it could theoretically be... idk, my facebook status or something.)
 
 ```
 f0VMRgIBAQAAsDkPBev6AAIAPgABAAAACRBAAAAAAABAAAAAAAAAAAAA
@@ -83,4 +83,4 @@ AAAAAAAAAAAAAEAAOAABAAAABQAAAAEAAAAFAAAAAAAAAAAAAAAAEEAA
 AAAAAAAQQAAAAAAAeAAAAAAAAAB4AAAAAAAAAAEAAAAAAAAA
 ```
 
-\*Please don't. You've got no idea what's in there. I just wanted to point out how neat it is that this forkbomb is small enough, even encoded, that it could theoretically be... idk, my facebook status or something.
+Tuta tuta, khalaset al haduta.

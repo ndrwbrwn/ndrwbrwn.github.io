@@ -1,10 +1,10 @@
 ---
 title: "MySQL's RANK() function"
-publicationDate: 2025-01-24
+publicationDate: 2026-01-24
 description: "I really considered writing a rhyming title for this one."
 ---
 
-Once upon a time, I tried fairly hard to optimise an old, *highly* slow, database-based ranking system.
+Engang for længe siden... I tried fairly hard to optimise an old, *highly* slow, database-based ranking system.
 Hopefully a little bit of this is interesting.
 
 ## What & why?
@@ -173,3 +173,5 @@ Well, if you can't tell by the level of detail I put into the four ways above, w
 It's been live for approximately 12 months (since 18/01/2024) and we haven't seen any timeouts since. At one point I threatened to
 make it run more-often with the shorter runtime, because our ranks do get a bit out-of-date only recalculating every 2 hours, but
 that's a slope that only leads to "live rankings", which is a whole different beast I don't really want to bother with yet. Yet.
+
+Thus ends the story, og hvis de ikke er døde, lever de endnu.
