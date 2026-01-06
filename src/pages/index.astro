@@ -12,18 +12,32 @@ async function getRenderedEntry(name) {
 }
 var { Content } = {};
 
+async function pickQuote() {
+  let quotes = [
+    '"The only thing that could go wrong."',
+    '"The one person I would pick if I had to get marooned on a desert island with someone."',
+    '"The dad from a picturesque Disney family, but like, from the start of the movie before the wife dies."',
+    '"The good kind of insane."',
+    '"I think you radiate \'forklift certified\'."',
+    '"Recovery Tool"',
+  ];
+
+  return quotes[Math.floor(Math.random() * quotes.length)];
+}
+
 const articles = (await getCollection("blog")).sort(
   (a, b) => b.data.publicationDate.valueOf() - a.data.publicationDate.valueOf()
 );
 ---
 
 <PageLayout title="Andrew Brown" description="A website for my (mis)adventures.">
+  <Fragment slot="header"><span class="quote">{ pickQuote() }</span></Fragment>
   <h2 id="about"><a class="heading-linker" href="#about">About Me</a></h2>
   { console.log(JSON.stringify(({ Content } = await getRenderedEntry("about")))) }
   <Content />
   <h3 id="this"><a class="heading-linker" href="#this">About This</a></h2>
   { console.log(JSON.stringify(({ Content } = await getRenderedEntry("this")))) }
-  <Content/>
+  <Content />
   <h2 id="content"><a class="heading-linker" href="#content">Postings</a></h2>
   <div class="article-grid">
     {
@@ -59,5 +73,9 @@ const articles = (await getCollection("blog")).sort(
 
   .article-content {
     padding: 1rem;
+  }
+
+  .quote {
+    color: #808080;
   }
 </style>

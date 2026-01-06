@@ -7,7 +7,9 @@ const { title } = Astro.props;
 
 <bar>
   <div class="navbar container">
-    <a href="/"><Image src={ Icon } width="32" height="32" alt="This website's logo" /></a>
+    <a href="/">
+      <Image src={ Icon } width="32" height="32" alt="This website's logo" loading="eager"/>
+    </a>
   </div>
 </bar>
 <header>
