@@ -2,7 +2,7 @@
   --nav-height: 3rem;
   --standard-border: 1px solid;
   --font-sans: "Roboto", sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  --font-mono: "Roboto Mono", monospace;
 
   --background-color: #ffffff;
   --secondary-background-color: #0e071d;
@@ -21,7 +21,7 @@ html {
 body {
   line-height: 1.375;
   margin: 0;
-  font-family: system-ui, sans-serif;
+  font-family: var(--font-sans);
   background-color: var(--background-color);
   color: var(--text-color);
   display: flex;
