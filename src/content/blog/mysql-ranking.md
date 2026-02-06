@@ -1,6 +1,6 @@
 ---
 title: "MySQL's RANK() function"
-publicationDate: 2026-01-24
+publicationDate: 2026-02-06
 description: "I really considered writing a rhyming title for this one."
 ---
 
@@ -118,13 +118,13 @@ most of the 12 minutes goes.
 
 ## Ways Forward
 ### One
-Try some lock business with a temporary table. By which, this means:
+Try some lock funny-business with a temporary table. By which, this means:
 ```sql
 DROP TABLE IF EXISTS ranks_new;
 DROP TABLE IF EXISTS ranks_old;
 
 CREATE TABLE ranks_new LIKE ranks;
-SET TRANSATION ISOLATION LEVEL READ UNCOMMITTED;
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
 ...
 
@@ -147,22 +147,27 @@ Try dumping the new to file with `SELECT INTO outfile;` and then loading it with
 just requires managing a temporary file on your DB server somehow (which is not super fun).
 
 Well, turns out this actually ended up taking *longer*: ~15 minutes, up from 12. So we canned this idea, because trying to manage remotely
-creating and deleting some `outfile` on our DB server with only a MySQL interface sucks even it ran at the same speed.
+creating and deleting some `outfile` on our DB server with only a MySQL interface sucks even if it ran at the same speed.
 At a guess, the slowdown was probably because writing to file means the data is just going to disk and getting re-read, rather than
 remaining inside MySQL's memory. Maybe it's better for truly huge tables that just never fit in memory to begin with?
 
 ### Three
 Try `CREATE TABLE SELECT`. This one I had high hopes for. The reason being, when we do IODKU, we already have a table, but MySQL doesn't
-"know" the contents of at `INSERT`-time.
+"know" its contents at `INSERT`-time.
 This means it has to create an undo log entry for every single row (to roll it back to "this row doesn't exist").
-Now, of course, you and I who are writing this can tell that the table was empty to begin with, and so the undo log *really* only
+Now, of course, you and I who are reading this can tell that the table was empty to begin with, and so the undo log *really* only
 needs to say "this table was empty", but with a separate `CREATE` and `INSERT`, MySQL doesn't know the difference.
 
 So in *theeeoooory*, `CREATE TABLE SELECT` should correctly indicate to MySQL that the table was empty to begin with, which avoids all
-of that undo-log-writing. In *practice*, however... you can't `CREATE TABLE ranks_new SELECT ... LIKE ranks`. So you have to
+of that undo-log-writing. In practice, however... you can't `CREATE TABLE ranks_new SELECT ... LIKE ranks`. So you have to
 completely blow out the complexity of your query by manually naming everything correctly, and even have to put in special care to make
 sure your indices get rebuilt in the same way once the table is created. So, because something something readable something something
 maintainable, this option isn't really suitable either.
+
+Another honourable mention here, because it falls into the same category of not-quite-suitable, is doing Option 1, but trying to run
+your `CREATE TABLE LIKE` inside the transaction, so the rollback only stores the pre-transaction "This table doesn't exist" state.
+Unfortunately something to do with mixing DDL and DQL within a single transaction doesn't work: it seemed to instantly commit the
+created table before I had the chance to `INSERT`, leading back to the same problem of needing to write 28.5 million undo log entries.
 
 ### Four
 Mmmmm... maybe we could split things back up again?
@@ -174,9 +179,9 @@ ranking runs, in a loop, then manually called it; it ran for 40 minutes, then I 
 as slow as the old way, so I killed it. Go figure. Maybe because it was pulling the entire table all 89 times to filter by `board`?
 
 ## Wrapping Up
-Well, if you can't tell by the level of detail I put into those four ways above, we ended up going with the first one.
+Well, if you can't tell by the language I used to describe each of those four ways above, we ended up going with the first one.
 It's been live for approximately 12 months (since 18/01/2024) and we haven't seen any timeouts since. At one point I threatened to
 make it run more-often with the shorter runtime, because our ranks do get a bit out-of-date only recalculating every 2 hours, but
-that's a slope that only leads to "live rankings", which is a whole different beast I don't really want to bother with yet. Yet.
+that's a slope that only leads to "live rankings", which is a whole different beast I don't really want to bother with... yet.
 
 Thus ends the story; <a title='Danish: "And if they&#39;re not dead, they are still alive."'>og hvis de ikke er døde, lever de endnu.</a>
