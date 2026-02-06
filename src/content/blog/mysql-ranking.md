@@ -8,8 +8,7 @@ description: "I really considered writing a rhyming title for this one."
 Hopefully a little bit of this is interesting.
 
 ## What & why?
-The context is immaterial; I don't want to dox myself by revealing what website I did this for.
-What matters is what I started with.
+The context is immaterial; what matters is what I started with.
 
 Two database tables:
 ```sql
@@ -168,7 +167,7 @@ maintainable, this option isn't really suitable either.
 ### Four
 Mmmmm... maybe we could split things back up again?
 So go back to 89 queries, but still use `RANK()` and `PARTITION BY g.group_id` to avoid all of the extra cruft. (You'll have to take my
-word that there was a heap of it: the script that did all of this was over 400 lines of code! I cbf explaining all of that!)
+word that there was a heap of it: the script that did all of this was 400 lines of code and I cbf reproducing/explaining all of it here.)
 
 To be honest, I don't know why splitting things up again sucked, but it did. I wrote a stored procedure to do 89 per-leaderboard
 ranking runs, in a loop, then manually called it; it ran for 40 minutes, then I made the executive decision that it was at least
@@ -180,4 +179,4 @@ It's been live for approximately 12 months (since 18/01/2024) and we haven't see
 make it run more-often with the shorter runtime, because our ranks do get a bit out-of-date only recalculating every 2 hours, but
 that's a slope that only leads to "live rankings", which is a whole different beast I don't really want to bother with yet. Yet.
 
-Thus ends the story. <a title='Danish: "And if they&#39;re not dead, they are still alive."'>Og hvis de ikke er døde, lever de endnu.</a>
+Thus ends the story; <a title='Danish: "And if they&#39;re not dead, they are still alive."'>og hvis de ikke er døde, lever de endnu.</a>
