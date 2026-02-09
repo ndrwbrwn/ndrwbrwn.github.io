@@ -1,6 +1,6 @@
 ---
 title: "MySQL's RANK() function"
-publicationDate: 2026-02-06
+publicationDate: 2026-02-09
 description: "I really considered writing a rhyming title for this one."
 ---
 

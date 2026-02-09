@@ -3,14 +3,14 @@ import { getEntry, getCollection, render } from "astro:content";
 import PageLayout from "../layouts/PageLayout.astro";
 import PublicationDate from "../components/PublicationDate.astro";
 
-async function getRenderedEntry(name) {
+async function getRenderedEntry(name: string) {
   const entry = await getEntry("about", name);
   if (!entry) {
-    return Astro.redirect('/404');
+    throw new Error("Missing 'about' markdown entry.");
   }
   return await render(entry);
 }
-var { Content } = {};
+var { Content } = await getRenderedEntry("about");
 
 async function pickQuote() {
   let quotes = [
@@ -36,7 +36,6 @@ const articles = (await getCollection("blog")).sort(
 <PageLayout title="Andrew Brown" description="A website for my (mis)adventures.">
   <Fragment slot="header"><span class="quote">{ pickQuote() }</span></Fragment>
   <h2 id="about"><a class="heading-linker" href="#about">About Me</a></h2>
-  { console.log(JSON.stringify(({ Content } = await getRenderedEntry("about")))) }
   <Content />
   <h3 id="this"><a class="heading-linker" href="#this">About This</a></h2>
   { console.log(JSON.stringify(({ Content } = await getRenderedEntry("this")))) }
