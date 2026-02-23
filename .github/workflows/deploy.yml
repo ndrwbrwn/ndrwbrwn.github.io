@@ -1,6 +1,8 @@
 name: Deploy to GitHub Pages
 
 on:
+  schedule:
+    - cron: '7 0/6 * * *' # RNG doeth provide me with '7'.
   push:
     branches: [ main ]
   workflow_dispatch:
